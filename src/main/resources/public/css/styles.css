@@ -16,5 +16,26 @@ body{
 
 .h1{
     text-align: left;
-    color:#00ff00;
+    color: #00ff00;
+}
+
+header {
+    background-image:url("/images/wildlife1.jpg");
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    display: flex;
+    align-items: center;
+}
+header * {
+    display: inline;
+}
+header li {
+    margin: 20px;
+}
+header li a {
+    color: #003300;
+    text-decoration: none;
 }
