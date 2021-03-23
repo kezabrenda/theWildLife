@@ -1,25 +1,46 @@
 package models;
 
-public class Sighting {
-    private String animal;
-    private String location;
-    private String rangerName;
+import interfaces.SightingsInterface;
 
-    public Sighting(String animal, String location, String rangerName){
-        this.animal=animal;
-        this.location=location;
-        this.rangerName=rangerName;
+import java.sql.Timestamp;
+
+public class Sighting implements SightingsInterface {
+    private int sightingId;
+    private int animalId;
+    private int locationId;
+    private int rangerId;
+    private Timestamp date;
+
+    public Sighting(int sightingId, int animalId, int locationId, int rangerId){
+        this.sightingId = sightingId;
+        this.animalId = animalId;
+        this.locationId = locationId;
+        this.rangerId = rangerId;
     }
 
-    public String getAnimal() {
-        return animal;
+    public int getSightingId() {
+        return sightingId;
     }
 
-    public String getLocation() {
-        return location;
+    public int getAnimalId() {
+        return animalId;
     }
 
-    public String getRangerName() {
-        return rangerName;
+    public int getLocationId() {
+        return locationId;
+    }
+
+    public int getRangerId() {
+        return rangerId;
+    }
+
+    @Override
+    public void save() {
+
+    }
+
+    @Override
+    public void delete() {
+
     }
 }
