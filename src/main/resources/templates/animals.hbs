@@ -1,0 +1,20 @@
+{{#partial "content"}}
+    <section class="landing-pg">
+        <div class="land-left">
+        </div>
+        <div class="land-right">
+        </div>
+        <div class="animalsStyle">
+
+            <h4 class="card-title"><strong>{{name}}</strong></h4>
+
+            <h6 class="font-weight-bold indigo-text py-2">{{type}}</h6>
+            <br>
+            <br>
+            <form action="/animals/{{id}}/delete" method="post">
+                <a href="/animals/{{id}}/delete"><button class="btn btn-dark-green">Delete animal</button></a>
+            </form>
+        </div>
+    </section>
+{{/partial}}
+{{> layout.hbs}}
