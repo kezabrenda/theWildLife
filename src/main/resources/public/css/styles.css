@@ -8,7 +8,7 @@
 }
 
 body{
-    background-image:url("/images/wildlife1.jpg");
+    background-image:url("/images/wildlife2.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     text-align: center;
@@ -20,7 +20,7 @@ body{
 }
 
 header {
-    background-image:url("/images/wildlife1.jpg");
+    /*background-image:url("/images/wildlife2.jpg");*/
     position: fixed;
     top: 0;
     left: 0;
@@ -37,6 +37,6 @@ header li {
     margin: 20px;
 }
 header li a {
-    color: #003300;
+    color: white;
     text-decoration: none;
 }

@@ -1,3 +1,5 @@
+package models;
+
 public class Sighting {
     private String animal;
     private String location;
