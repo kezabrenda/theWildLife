@@ -9,11 +9,14 @@ public class Animal implements AnimalInterface {
     private int animalId;
     private int animalAge;
     private String animalName;
+    public  String animalSituation;
+    public static final String ANIMAL_SITUATION = "animal";
 
     public Animal(int animalId, int animalAge, String animalName){
         this.animalId= animalId;
         this.animalAge= animalAge;
         this.animalName= animalName;
+        this.animalSituation = ANIMAL_SITUATION;
     }
 
     public int getAnimalId() {
@@ -26,6 +29,9 @@ public class Animal implements AnimalInterface {
 
     public String getAnimalName() {
         return animalName;
+    }
+    public static String getAnimalSituation() {
+        return ANIMAL_SITUATION;
     }
 
     @Override
@@ -40,11 +46,12 @@ public class Animal implements AnimalInterface {
 
     @Override
     public void save() {
-        String sql = "INSERT INTO animals (animalName, animalAge) VALUES (:animalName, :animalAge)";
+        String sql = "INSERT INTO animals (name, age, animalSituation) VALUES (:name, :age, :animalSituation)";
         try(Connection con = DB.sql2o.open()) {
             this.animalId = (int) con.createQuery(sql, true)
-                    .addParameter("AnimalName", animalName)
-                    .addParameter("animalAge", animalAge)
+                    .addParameter("name", animalName)
+                    .addParameter("age", animalAge)
+                    .addParameter("animalSituation", animalSituation)
                     .throwOnMappingFailure(false)
                     .executeUpdate()
                     .getKey();
@@ -61,10 +68,10 @@ public class Animal implements AnimalInterface {
     }
 
     public static Animal find(int animalId) {
-        String sql = "SELECT * FROM animals WHERE animalId = :animalId;";
+        String sql = "SELECT * FROM animals WHERE id = :id;";
         try (Connection con = DB.sql2o.open()) {
             return con.createQuery(sql)
-                    .addParameter("animalId", animalId)
+                    .addParameter("id", animalId)
                     .throwOnMappingFailure(false)
                     .executeAndFetchFirst(Animal.class);
         }
@@ -73,9 +80,9 @@ public class Animal implements AnimalInterface {
     @Override
     public void delete() {
         try(Connection con = DB.sql2o.open()) {
-            String sql = "DELETE FROM animals WHERE animalId = :animalId;";
+            String sql = "DELETE FROM animals WHERE id = :id;";
             con.createQuery(sql)
-                    .addParameter("animalId", this.animalId)
+                    .addParameter("id", this.animalId)
                     .executeUpdate();
         }
     }
