@@ -28,13 +28,18 @@ public class App {
         }, new HandlebarsTemplateEngine());
 
         /*About ANIMAL*/
-        get("/animals/new", (request, response) -> {
-            Map<String, Object> model = new HashMap<>();
-            model.put("animals", Animal.ANIMAL_SITUATION);
-            return new ModelAndView(model, "animal-form.hbs");
-        }, new HandlebarsTemplateEngine());
+        get("/animals",(request, response) -> {
+            Map<String,Object> model=new HashMap<String, Object>();
+            return new ModelAndView(model,"animals.hbs");
+        },new HandlebarsTemplateEngine());
 
-        post("/animals", (request, response) -> {
+        get("/new/animals",(request, response) -> {
+            Map<String,Object> model=new HashMap<String, Object>();
+            return new ModelAndView(model,"animal-form.hbs");
+        },new HandlebarsTemplateEngine());
+
+
+        post("/new/animals", (request, response) -> {
             Map<String, Object> model = new HashMap<>();
             int animalId = Integer.parseInt(request.queryParams("id"));
             int animalAge = Integer.parseInt(request.queryParams("age"));
@@ -42,7 +47,7 @@ public class App {
             Animal animal = new Animal( animalId, animalAge, animalName);
             animal.save();
             model.put("animals", Animal.all());
-            return new ModelAndView(model, "animals.hbs");
+            return new ModelAndView(model, "animal-form.hbs");
         }, new HandlebarsTemplateEngine());
 
         get("/animals", (request, response) -> {
@@ -50,15 +55,6 @@ public class App {
             model.put("animals", Animal.all());
             return new ModelAndView(model, "animals.hbs");
         }, new HandlebarsTemplateEngine());
-
-        post("/animals/:id/delete", (request, response) -> {
-            Map<String, Object> model = new HashMap<>();
-            Animal animal = Animal.find(Integer.parseInt(request.params(":id")));
-            animal.delete();
-            model.put("animals", Animal.all());
-            return new ModelAndView(model,"animals.hbs");
-        }, new HandlebarsTemplateEngine());
-
         /*****************************************************************************/
 
         /*ABOUT RANGERS*/
