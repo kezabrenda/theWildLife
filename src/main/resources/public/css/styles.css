@@ -1,4 +1,4 @@
-{
+*{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -9,10 +9,10 @@
 }
 
 body{
-    background-image:url("/images/wildlife2.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    text-align: center;
+  background-image:url("/images/wildlife2.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  text-align: center;
 }
 
 .h1{
@@ -20,7 +20,7 @@ body{
     color: #00ff00;
 }
 
-header {
+.header {
     position: fixed;
     top: 0;
     left: 0;
@@ -30,13 +30,13 @@ header {
     align-items: center;
     box-shadow: 0 0 25px 0 black;
 }
-header * {
+.header * {
     display: inline;
 }
-header li {
+.header li {
     margin: 20px;
 }
-header li a {
+.header li a {
     color: white;
     text-decoration: none;
 }
