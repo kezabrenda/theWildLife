@@ -60,7 +60,7 @@ public class App {
         /*ABOUT RANGERS*/
         get("rangers/new", (request, response) -> {
             Map<String, Object> model = new HashMap<>();
-            return new ModelAndView(model, "ranger-form.hbs");
+            return new ModelAndView(model, "rangers.hbs-form.hbs");
         }, new HandlebarsTemplateEngine());
 
         post("/rangers", (request, response) -> {
@@ -71,13 +71,13 @@ public class App {
             ranger.save();
             model.put("rangers", Rangers.all());
             model.put("template", "templates/rangers.vtl");
-            return new ModelAndView(model, "rangers.hbs");
+            return new ModelAndView(model, "rangers.hbs-form.hbs");
         }, new HandlebarsTemplateEngine());
 
         get("/rangers", (request, response) -> {
             Map<String, Object> model = new HashMap<>();
             model.put("rangers", Rangers.all());
-            return new ModelAndView(model, "rangers.hbs");
+            return new ModelAndView(model, "rangers.hbs-form.hbs");
         }, new HandlebarsTemplateEngine());
 
         post("/rangers/:id/delete", (request, response) -> {
@@ -85,7 +85,7 @@ public class App {
             Rangers ranger = Rangers.find(Integer.parseInt(request.params(":id")));
             ranger.delete();
             model.put("rangers", Rangers.all());
-            return new ModelAndView(model,"rangers.hbs");
+            return new ModelAndView(model,"rangers.hbs-form.hbs");
         }, new HandlebarsTemplateEngine());
 
         /*****************************************************************************/
