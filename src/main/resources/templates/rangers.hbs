@@ -6,9 +6,9 @@
     <div class="container">
     {{#each rangers}}
             <p class="card-title"><strong>{{name}}</strong></p>
-            <p>Tag No: {{badgeNo}}</p>
+            <p>Badge No: {{badgeNo}}</p>
             <form action="/rangers/{{id}}/delete" method="post">
-                <a href="/rangers/{{id}}/delete"><button class="btn btn-dark-green">Delete ranger</button></a>
+                <a href="/rangers/{{id}}/delete"><button class="btn btn-dark">Delete ranger</button></a>
             </form>
         </div>
     {{/each}}

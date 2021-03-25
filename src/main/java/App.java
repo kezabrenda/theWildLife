@@ -39,7 +39,7 @@ public class App {
         },new HandlebarsTemplateEngine());
 
 
-        post("/new/animals", (request, response) -> {
+        post("/animals", (request, response) -> {
             Map<String, Object> model = new HashMap<>();
             int animalId = Integer.parseInt(request.queryParams("id"));
             int animalAge = Integer.parseInt(request.queryParams("age"));
@@ -47,7 +47,7 @@ public class App {
             Animal animal = new Animal( animalId, animalAge, animalName);
             animal.save();
             model.put("animals", Animal.all());
-            return new ModelAndView(model, "animal-form.hbs");
+            return new ModelAndView(model, "animals.hbs");
         }, new HandlebarsTemplateEngine());
 
         get("/animals", (request, response) -> {
@@ -60,7 +60,7 @@ public class App {
         /*ABOUT RANGERS*/
         get("rangers/new", (request, response) -> {
             Map<String, Object> model = new HashMap<>();
-            return new ModelAndView(model, "rangers.hbs-form.hbs");
+            return new ModelAndView(model, "rangers.hbs");
         }, new HandlebarsTemplateEngine());
 
         post("/rangers", (request, response) -> {
@@ -71,13 +71,13 @@ public class App {
             ranger.save();
             model.put("rangers", Rangers.all());
             model.put("template", "templates/rangers.vtl");
-            return new ModelAndView(model, "rangers.hbs-form.hbs");
+            return new ModelAndView(model, "rangers.form.hbs");
         }, new HandlebarsTemplateEngine());
 
         get("/rangers", (request, response) -> {
             Map<String, Object> model = new HashMap<>();
             model.put("rangers", Rangers.all());
-            return new ModelAndView(model, "rangers.hbs-form.hbs");
+            return new ModelAndView(model, "rangers.hbs");
         }, new HandlebarsTemplateEngine());
 
         post("/rangers/:id/delete", (request, response) -> {
@@ -85,7 +85,7 @@ public class App {
             Rangers ranger = Rangers.find(Integer.parseInt(request.params(":id")));
             ranger.delete();
             model.put("rangers", Rangers.all());
-            return new ModelAndView(model,"rangers.hbs-form.hbs");
+            return new ModelAndView(model,"rangers.hbs");
         }, new HandlebarsTemplateEngine());
 
         /*****************************************************************************/
