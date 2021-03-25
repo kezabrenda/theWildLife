@@ -30,6 +30,7 @@ public class App {
         /*About ANIMAL*/
         get("/animals",(request, response) -> {
             Map<String,Object> model=new HashMap<String, Object>();
+            model.put("animals", Animal.ANIMAL_SITUATION);
             return new ModelAndView(model,"animals.hbs");
         },new HandlebarsTemplateEngine());
 
@@ -41,10 +42,9 @@ public class App {
 
         post("/animals", (request, response) -> {
             Map<String, Object> model = new HashMap<>();
-            int animalId = Integer.parseInt(request.queryParams("id"));
             int animalAge = Integer.parseInt(request.queryParams("age"));
             String animalName = request.queryParams("name");
-            Animal animal = new Animal( animalId, animalAge, animalName);
+            Animal animal = new Animal(animalAge, animalName);
             animal.save();
             model.put("animals", Animal.all());
             return new ModelAndView(model, "animals.hbs");

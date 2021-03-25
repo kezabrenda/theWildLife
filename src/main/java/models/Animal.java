@@ -12,8 +12,7 @@ public class Animal implements AnimalInterface {
     public  String animalSituation;
     public static final String ANIMAL_SITUATION = "animal";
 
-    public Animal(int animalId, int animalAge, String animalName){
-        this.animalId= animalId;
+    public Animal(int animalAge, String animalName){
         this.animalAge= animalAge;
         this.animalName= animalName;
         this.animalSituation = ANIMAL_SITUATION;

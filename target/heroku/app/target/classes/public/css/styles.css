@@ -1,0 +1,88 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color:#008000;
+    font-family: 'Fredericka the Great', cursive;
+    font-size:20px;
+    z-index: 4;
+}
+
+body{
+  background-image:url("/images/wildlife2.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  text-align: center;
+}
+
+.h1{
+    text-align: bottom;
+    color: #00ff00;
+}
+
+.p{
+color: #00ff00;
+}
+
+#header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 0 25px 0 black;
+}
+#header * {
+    display: inline;
+}
+#header li {
+    margin: 20px;
+}
+#header li a {
+    color: white;
+    text-decoration: none;
+}
+#animalsStyle {
+  position: absolute;
+  height: 100%;
+  color: black;
+  z-index: 4;
+}
+
+.form{
+  position: relative;
+  z-index: 3;
+  width: 500px;
+  margin-top: 15vh;
+  box-shadow: 0 0 10px rgba(0,0,0,0.4);
+  align-items: center;
+}
+.form>h1{
+  color: rgb(0, 51, 102);
+  font-size: 2.3em;
+}
+.form>input[type=text],
+.form>input[type=number]{
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: none;
+  border-bottom: 1px solid rgb(0, 51, 102);
+  color: rgb(0, 26, 51);
+  outline: none;
+  display: block;
+  font-size: 1.5em;
+}
+
+.form input[type=submit]{
+  margin-top: 10px;
+  width: 100%;
+  padding: 5px;
+  color: white;
+  font-size: 20px
+}
+::placeholder{
+  color: rgb(0, 89, 179);
+}
