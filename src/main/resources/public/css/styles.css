@@ -65,7 +65,6 @@ color: #00ff00;
 }
 .form>input[type=text],
 .form>input[type=number]{
-  background: none;
   width: 100%;
   padding: 10px;
   margin: 10px 0;
@@ -79,7 +78,6 @@ color: #00ff00;
 
 .form input[type=submit]{
   margin-top: 10px;
-  background: rgb(0, 0, 153);
   width: 100%;
   padding: 5px;
   color: white;
