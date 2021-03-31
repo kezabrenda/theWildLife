@@ -2,8 +2,8 @@
     <link rel='stylesheet' href='/css/styles.css'>
 {{/partial}}
 {{#partial "content"}}
-    <p>Add sighting here:</p>
-    <form action="/sightings" method="post">
+    <p>Add sightings here:</p>
+    <form action="/create/sightings/new" method="post" class="form">
         <div class="form-group">
             <label for="animalId">Animal</label>
             <select  id='animalId' name='animalId' type='text'>
@@ -35,7 +35,7 @@
             <label for="animalType">Animal Type</label>
             <select mdb-select md-form colorful-select dropdown-secondary id='animalType' name='animalType' type='text'>
                 <option class="text-grey" value="" disabled selected>Select Animal Type</option>
-                <option value="animal">Animal</option>
+                <option value="animals">Animal</option>
                 <option value="endangered">Endangered</option>
             </select>
         </div>

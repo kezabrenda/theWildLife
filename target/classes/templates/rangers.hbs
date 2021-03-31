@@ -3,17 +3,50 @@
 {{/partial}}
 {{#partial "content"}}
     <h1>All rangers</h1>
-    <div class="container">
-    {{#each rangers}}
-            <p class="card-title"><strong>{{name}}</strong></p>
-            <p>Badge No: {{badgeNo}}</p>
-            <form action="/rangers/{{id}}/delete" method="post">
-                <a href="/rangers/{{id}}/delete"><button class="btn btn-dark">Delete ranger</button></a>
-            </form>
-        </div>
-    {{/each}}
     <div>
-        <a href="/rangers/new"><button class="btn btn-unique">Add New Ranger</button></a>
+        <div class="col-md-4">
+            {{#if rangers}}
+                {{#each rangers as |r|}}
+                    <div class="container">
+                        <p class="text" id={{r.id}}>{{r.name}}</p><br>
+                        <a href="/view/rangers/sightings/{{r.id}}"><button class="btn btn-primary btn-md">View Sightings</button></a>
+                    </div>
+                <hr><br>
+                {{/each}}
+                <p class="text display-4">Create a <a href="/create/rangers">ranger</a></p>
+            {{/if}}
+        </div>
+        <div class="col-md-8">
+            {{#if sightings}}
+                <div class="card">
+                    <div class="card-body">
+                        <h1 class="card-title">Sightings</h1>
+                        <hr>
+                        <div class="col-md-4">
+                            <h3>Time</h3>
+                            <hr>
+                            {{#each sightings as |s|}}
+                                <li class="card-text ">{{s.time}}</li>
+                            {{/each}}
+                        </div>
+                        <div class="col-md-4">
+                            <h3>Animal</h3>
+                            <hr>
+                            {{#each animals as |a|}}
+                                <li class="card-text ">{{a}}</li>
+                            {{/each}}
+                        </div>
+                        <div class="col-md-4">
+                            <h3>Type</h3>
+                            <hr>
+                            {{#each types as |t|}}
+                                <li class="card-text ">{{t}}</li>
+                            {{/each}}
+                        </div>
+                    </div>
+                </div>
+            {{/if}}
+        </div>
     </div>
 {{/partial}}
 {{> layout.hbs}}

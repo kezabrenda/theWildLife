@@ -101,3 +101,8 @@ color: #00ff00;
 .card {
 background-color:rgba(0,10,0,0.6);
 }
+
+#nav-link{
+color: white;
+background-color:rgba(0,10,0,0.6);
+}
