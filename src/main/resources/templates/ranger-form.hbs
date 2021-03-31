@@ -3,15 +3,14 @@
 {{/partial}}
 {{#partial "content"}}
     <p>Add ranger here:</p>
-
-    <form action="/rangers" method="post">
+    <form action="/create/rangers/new" method="post" class="form">
         <div class="form-group">
             <label for="name">Ranger Name</label>
             <input id="name" name="name" type="text" class="form-control">
         </div>
         <div class="form-group">
-            <label for="badge">Badge No</label>
-            <input id="badge" name="badge" type="number" class="form-control">
+            <label for="badgeNo">Badge No</label>
+            <input id="badgeNo" name="badgeNo" type="number" class="form-control">
         </div>
         <button type="submit" class="btn btn-dark">Add Ranger</button>
     </form>

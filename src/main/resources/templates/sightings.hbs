@@ -4,17 +4,23 @@
 {{#partial "content"}}
     <h1>All sightings</h1>
     <div class="container">
-    {{#each sightings}}
-            <p>Sighted By: {{animalId}}</p>
-            <p>Location: {{rangerId}}</p>
-            <p>Time: {{locationId}}</p>
-            <form action="/sightings/{{id}}/delete" method="post">
-                <a href="/sightings/{{id}}/delete"><button>Delete sighting</button></a>
-            </form>
-        </div>
-    {{/each}}
-    <div>
-        <a href="/sightings/new"><button class="btn btn-dark">Add New Sighting</button></a>
+    {{#if sightings}}
+            <div class="col-md-3">
+                <h3>Time</h3>
+                <hr>
+                {{#each sightings as |s|}}
+                    <h3>{{s.time}}</h3>
+                {{/each}}
+
+                <h3>Animal</h3>
+                <hr>
+                {{#each animals as |a|}}
+                    <h3>{{a}}</h3>
+                {{/each}}
+            </div>
+    {{else}}
+            <h1>No sightings!! Create a<a href="/create/sightings"> sighting</a> </h1>
+    {{/if}}
     </div>
 {{/partial}}
 {{> layout.hbs}}

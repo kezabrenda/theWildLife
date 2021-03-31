@@ -1,11 +1,10 @@
-import models.Animal;
-import models.Locations;
-import models.Rangers;
-import models.Sighting;
+import models.*;
 import spark.ModelAndView;
 import spark.template.handlebars.HandlebarsTemplateEngine;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static spark.Spark.*;
@@ -27,76 +26,125 @@ public class App {
             return new ModelAndView(model, "index.hbs");
         }, new HandlebarsTemplateEngine());
 
-        /*About ANIMAL*/
-        get("/animals",(request, response) -> {
-            Map<String,Object> model=new HashMap<String, Object>();
-            model.put("animals", Animal.ANIMAL_SITUATION);
-            return new ModelAndView(model,"animals.hbs");
-        },new HandlebarsTemplateEngine());
 
-        get("/new/animals",(request, response) -> {
+        //animal
+        get("/create/animals",(request, response) -> {
             Map<String,Object> model=new HashMap<String, Object>();
             return new ModelAndView(model,"animal-form.hbs");
         },new HandlebarsTemplateEngine());
 
+        post("/create/animals/new",(request, response) -> {
+            Map<String,Object> model=new HashMap<String, Object>();
+            String type=request.queryParams("type");
+            System.out.println(type);
+            String health=request.queryParams("health");
+            System.out.println(health);
+            String age=request.queryParams("age");
+            System.out.println(age);
+            String name=request.queryParams("name");
+            System.out.println(name);
+            if(type.equals(EndangeredAnimals.ANIMAL_TYPE)){
+                EndangeredAnimals endangered=new EndangeredAnimals(name,EndangeredAnimals.ANIMAL_TYPE,health,age);
+                endangered.save();
+            }
+            else {
+                Animals animal=new Animals(name,Animals.ANIMAL_TYPE);
+                animal.save();
+            }
+            return new ModelAndView(model,"animal-form.hbs");
+        },new HandlebarsTemplateEngine());
 
-        post("/animals", (request, response) -> {
-            Map<String, Object> model = new HashMap<>();
-            int animalAge = Integer.parseInt(request.queryParams("age"));
-            String animalName = request.queryParams("name");
-            Animal animal = new Animal(animalAge, animalName);
-            animal.save();
-            model.put("animals", Animal.all());
-            return new ModelAndView(model, "animals.hbs");
-        }, new HandlebarsTemplateEngine());
+        get("/create/animals/endangered",(request, response) -> {
+            Map<String,Object> model=new HashMap<String, Object>();
+            List<String> health= new ArrayList<String>();
+            health.add(EndangeredAnimals.HEALTH_HEALTHY);
+            health.add(EndangeredAnimals.HEALTH_ILL);
+            health.add(EndangeredAnimals.HEALTH_OKAY);
+            List<String> age= new ArrayList<String>();
+            age.add(EndangeredAnimals.AGE_ADULT);
+            age.add(EndangeredAnimals.AGE_NEWBORN);
+            age.add(EndangeredAnimals.AGE_YOUNG);
+            model.put("health",health);
+            model.put("age",age);
+            String typeChosen="endangered";
+            model.put("endangered",typeChosen);
+            return new ModelAndView(model,"animal-form.hbs");
+        },new HandlebarsTemplateEngine());
 
-        get("/animals", (request, response) -> {
+        get("/view/animals",(request, response) -> {
+            Map<String,Object> model=new HashMap<String, Object>();
+            model.put("animals",Animals.all());
+            return new ModelAndView(model,"animals.hbs");
+        },new HandlebarsTemplateEngine());
+
+        post("/animals/:id/delete", (request, response) -> {
             Map<String, Object> model = new HashMap<>();
-            model.put("animals", Animal.all());
-            return new ModelAndView(model, "animals.hbs");
+            Animals animals = Animals.find(Integer.parseInt(request.params(":id")));
+            animals.delete();
+            model.put("animals", Locations.all());
+            return new ModelAndView(model,"animals.hbs");
         }, new HandlebarsTemplateEngine());
         /*****************************************************************************/
 
         /*ABOUT RANGERS*/
-        get("rangers/new", (request, response) -> {
+        get("/create/rangers", (request, response) -> {
             Map<String, Object> model = new HashMap<>();
-            return new ModelAndView(model, "rangers.hbs");
+            return new ModelAndView(model, "ranger-form.hbs");
         }, new HandlebarsTemplateEngine());
 
-        post("/rangers", (request, response) -> {
+        post("/create/rangers/new", (request, response) -> {
             Map<String, Object> model = new HashMap<>();
-            String name = request.queryParams("name");
-            int badge = Integer.parseInt(request.queryParams("badge"));
-            Rangers ranger = new Rangers(name,badge);
+            String rangerName = request.queryParams("rangerName");
+            int badgeNo = Integer.parseInt(request.queryParams("badgeNo"));
+            Rangers ranger = new Rangers(rangerName,badgeNo);
             ranger.save();
             model.put("rangers", Rangers.all());
             model.put("template", "templates/rangers.vtl");
-            return new ModelAndView(model, "rangers.form.hbs");
+            return new ModelAndView(model, "ranger-form.hbs");
         }, new HandlebarsTemplateEngine());
 
-        get("/rangers", (request, response) -> {
+        get("/view/rangers", (request, response) -> {
             Map<String, Object> model = new HashMap<>();
             model.put("rangers", Rangers.all());
             return new ModelAndView(model, "rangers.hbs");
         }, new HandlebarsTemplateEngine());
 
+        get("/view/rangers/sightings/:id",(request, response) -> {
+            Map<String,Object> model=new HashMap<String, Object>();
+            int idOfRanger= Integer.parseInt(request.params(":id"));
+            Rangers foundRanger=Rangers.find(idOfRanger);
+            List<Sightings> sightings=foundRanger.getRangerSightings();
+            ArrayList<String> animals=new ArrayList<String>();
+            ArrayList<String> types=new ArrayList<String>();
+            for (Sightings sighting : sightings){
+                String animal_name=Animals.find(sighting.getAnimal_id()).getName();
+                String animal_type=Animals.find(sighting.getAnimal_id()).getType();
+                animals.add(animal_name);
+                types.add(animal_type);
+            }
+            model.put("sightings",sightings);
+            model.put("animals",animals);
+            model.put("types",types);
+            model.put("rangers",Rangers.all());
+            return new ModelAndView(model,"rangers.hbs");
+        },new HandlebarsTemplateEngine());
+
         post("/rangers/:id/delete", (request, response) -> {
             Map<String, Object> model = new HashMap<>();
-            Rangers ranger = Rangers.find(Integer.parseInt(request.params(":id")));
-            ranger.delete();
-            model.put("rangers", Rangers.all());
+            Rangers rangers = Rangers.find(Integer.parseInt(request.params(":id")));
+            rangers.delete();
+            model.put("rangers", Locations.all());
             return new ModelAndView(model,"rangers.hbs");
         }, new HandlebarsTemplateEngine());
-
         /*****************************************************************************/
 
         /*ABOUT LOCATION*/
-        get("locations/new", (request, response) -> {
+        get("/create/locations", (request, response) -> {
             Map<String, Object> model = new HashMap<>();
             return new ModelAndView(model, "location-form.hbs");
         }, new HandlebarsTemplateEngine());
 
-        post("/locations", (request, response) -> {
+        post("/create/locations/new", (request, response) -> {
             Map<String, Object> model = new HashMap<>();
             String name = request.queryParams("name");
             Locations location = new Locations(name);
@@ -105,11 +153,31 @@ public class App {
             return new ModelAndView(model, "locations.hbs");
         }, new HandlebarsTemplateEngine());
 
-        get("/locations", (request, response) -> {
+        get("/view/locations", (request, response) -> {
             Map<String, Object> model = new HashMap<>();
             model.put("locations", Locations.all());
             return new ModelAndView(model, "locations.hbs");
         }, new HandlebarsTemplateEngine());
+
+        get("/view/locations/sightings/:id",(request, response) -> {
+            Map<String,Object> model=new HashMap<String, Object>();
+            int idOfLocation= Integer.parseInt(request.params(":id"));
+            Locations foundLocation=Locations.find(idOfLocation);
+            List<Sightings> sightings=foundLocation.getLocationSightings();
+            ArrayList<String> animals=new ArrayList<String>();
+            ArrayList<String> types=new ArrayList<String>();
+            for (Sightings sighting : sightings){
+                String animal_name=Animals.find(sighting.getAnimal_id()).getName();
+                String animal_type=Animals.find(sighting.getAnimal_id()).getType();
+                animals.add(animal_name);
+                types.add(animal_type);
+            }
+            model.put("sightings",sightings);
+            model.put("animals",animals);
+            model.put("types",types);
+            model.put("locations",Locations.all());
+            return new ModelAndView(model,"location-view.hbs");
+        },new HandlebarsTemplateEngine());
 
         post("/locations/:id/delete", (request, response) -> {
             Map<String, Object> model = new HashMap<>();
@@ -122,38 +190,46 @@ public class App {
         /****************************************************************************************/
 
         /*ABOUT SIGHTINGS*/
-        get("sightings/new", (request, response) -> {
+        get("/create/sightings", (request, response) -> {
             Map<String, Object> model = new HashMap<>();
-            model.put("animals", Animal.all());
+            model.put("animals", Animals.all());
             model.put("locations", Locations.all());
             model.put("rangers", Rangers.all());
             return new ModelAndView(model, "sighting-form.hbs");
         }, new HandlebarsTemplateEngine());
 
-        post("/sightings", (request, response) -> {
-            Map<String, Object> model = new HashMap<>();
-            int sightingId = Integer.parseInt(request.queryParams("sightingId"));
-            int animalId = Integer.parseInt(request.queryParams("animalId"));
-            int rangerId = Integer.parseInt(request.queryParams("rangerId"));
-            int locationId = Integer.parseInt(request.queryParams("locationId"));
-            String animalSituation = request.queryParams("animalSituation");
-            Sighting sighting = new Sighting(sightingId,animalId,rangerId,locationId,animalSituation);
+        post("/create/sightings/new",(request, response) -> {
+            Map<String,Object> model=new HashMap<String, Object>();
+            int location_id= Integer.parseInt(request.queryParams("location"));
+            int ranger_id= Integer.parseInt(request.queryParams("ranger"));
+            int animal_id= Integer.parseInt(request.queryParams("animal"));
+            Sightings sighting=new Sightings(location_id,ranger_id,animal_id);
             sighting.save();
-            model.put("sightings", Sighting.all());
-            return new ModelAndView(model, "sightings.hbs");
-        }, new HandlebarsTemplateEngine());
+            return new ModelAndView(model,"sighting-form.hbs");
+        },new HandlebarsTemplateEngine());
 
-        get("/sightings", (request, response) -> {
-            Map<String, Object> model = new HashMap<>();
-            model.put("sightings", Sighting.all());
-            return new ModelAndView(model, "sightings.hbs");
-        }, new HandlebarsTemplateEngine());
+        get("/view/sightings",(request, response) -> {
+            Map<String,Object> model=new HashMap<String, Object>();
+            List<Sightings> sightings=Sightings.all();
+            ArrayList<String> animals=new ArrayList<String>();
+            ArrayList<String> types=new ArrayList<String>();
+            for (Sightings sighting : sightings){
+                String animal_name=Animals.find(sighting.getAnimal_id()).getName();
+                String animal_type=Animals.find(sighting.getAnimal_id()).getType();
+                animals.add(animal_name);
+                types.add(animal_type);
+            }
+            model.put("sightings",sightings);
+            model.put("animals",animals);
+            model.put("types",types);
+            return new ModelAndView(model,"sightings.hbs");
+        },new HandlebarsTemplateEngine());
 
         post("/sightings/:id/delete", (request, response) -> {
             Map<String, Object> model = new HashMap<>();
-            Sighting sighting = Sighting.find(Integer.parseInt(request.params(":id")));
-            sighting.delete();
-            model.put("sightings", Sighting.all());
+            Sightings sightings = Sightings.find(Integer.parseInt(request.params(":id")));
+            sightings.delete();
+            model.put("sightings", Sightings.all());
             return new ModelAndView(model,"sightings.hbs");
         }, new HandlebarsTemplateEngine());
     }
